@@ -65,9 +65,9 @@ WEB API имеет 5 функций:
 ![](images/mult.png)
 
 Аналогичным способом работают остальные математические функции:
-![](images/div.jpg)
-![](images/sum.jpg)
-![](images/pos.jpg)
+![](images/div.png)
+![](images/sum.png)
+![](images/pos.png)
 
 
 - http://loc_adr/report метод GET и POST, отчет работы за сутки, на выходе результат суммарного вызова каждой математической функции в формате JSON вида
@@ -75,15 +75,15 @@ WEB API имеет 5 функций:
 < На выходе результат выполнения функции в формате JSON {"Возведение в степень": <кол-во>, "Деление" : <кол-во>, "Сложение" : <кол-во>, "Умножение" : <кол-во>} 
 
 Метод POST
-![](images/report_post.jpg)
-![](images/report_post2.jpg)
+![](images/report_post.png)
+![](images/report_post2.png)
 
 Метод GET выдает на выходе результат суммарного вызова всех математических функций за всё время 
 ![](images/report_get.jpg)
 
 Пример показа записей всех логов за всё время:
 - http://loc_adr/logs метод GET
-![](images/logs.jpg)
+![](images/logs.png)
 
 ## Библиотеки
 
