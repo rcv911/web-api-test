@@ -1,6 +1,7 @@
-from sqlalchemy import Table, Column, Integer, String
+from sqlalchemy import Table, Column, Integer, String, DateTime
 from sqlalchemy.orm import mapper
 from database import db_session, metadata
+
 
 
 class User(object):
@@ -15,13 +16,12 @@ class User(object):
         self.result = result
 
     def __repr__(self):
-        # return '<Date %r | IP %r  | Func %r  | Value1 %r | Value2 %r | Result %r>' % (self.date, self.ip, self.funcn, self.value1, self.value2, self.result)
         return '%r | %r  | %r  | %r | %r | %r \n' % (self.date, self.ip, self.funcn, self.value1, self.value2, self.result)
 
 
 users = Table('users', metadata,
               Column('id', Integer, primary_key=True),
-              Column('date', String(100)),
+              Column('date', DateTime),
               Column('ip', String(50)),
               Column('funcn', String(50)),
               Column('value1', String(50)),

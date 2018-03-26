@@ -2,12 +2,11 @@ from sqlalchemy import func
 
 from app import app
 from flask import request, jsonify
-import socket
 
 from database import init_db, db_session
 from models import User
 
-from datetime import datetime, date
+from datetime import datetime
 
 @app.route('/')
 def homepage():
@@ -24,7 +23,6 @@ def mult():
     #work with database
     init_db()
     dd = datetime.now()
-    # dd = d_today.date()
     ss = request.remote_addr
     u = User(str(dd), ss, 'Умножение', value1, value2, str(res))
     db_session.add(u)
@@ -42,7 +40,6 @@ def div():
     #work with database
     init_db()
     dd = datetime.now()
-    # dd = d_today.date()
     ss = request.remote_addr
     u = User(str(dd), ss, 'Деление', value1, value2, str(res))
     db_session.add(u)
@@ -60,7 +57,6 @@ def sum():
     #work with database
     init_db()
     dd = datetime.now()
-    # dd = d_today.date()
     ss = request.remote_addr
     u = User(str(dd), ss, 'Сумма', value1, value2, str(res))
     db_session.add(u)
@@ -78,7 +74,6 @@ def pos():
     #work with database
     init_db()
     dd = datetime.now()
-    # dd = d_today.date()
     ss = request.remote_addr
     u = User(str(dd), ss, 'Возведение в степень', value1, value2, str(res))
     db_session.add(u)
