@@ -1,3 +1,5 @@
+from sqlalchemy import func
+
 from app import app
 from flask import request, jsonify
 import socket
@@ -21,10 +23,10 @@ def mult():
 
     #work with database
     init_db()
-    d_today = datetime.now()
-    dd = d_today.date()
-    ss = socket.gethostbyname(socket.gethostname())
-    u = User(str(dd), str(ss), str(1), value1, value2, str(res))
+    dd = datetime.now()
+    # dd = d_today.date()
+    ss = request.remote_addr
+    u = User(str(dd), ss, 'Умножение', value1, value2, str(res))
     db_session.add(u)
     db_session.commit()
 
@@ -39,10 +41,10 @@ def div():
 
     #work with database
     init_db()
-    d_today = datetime.now()
-    dd = d_today.date()
-    ss = socket.gethostbyname(socket.gethostname())
-    u = User(str(dd), str(ss), str(2), value1, value2, str(res))
+    dd = datetime.now()
+    # dd = d_today.date()
+    ss = request.remote_addr
+    u = User(str(dd), ss, 'Деление', value1, value2, str(res))
     db_session.add(u)
     db_session.commit()
 
@@ -57,10 +59,10 @@ def sum():
 
     #work with database
     init_db()
-    d_today = datetime.now()
-    dd = d_today.date()
-    ss = socket.gethostbyname(socket.gethostname())
-    u = User(str(dd), str(ss), str(3), value1, value2, str(res))
+    dd = datetime.now()
+    # dd = d_today.date()
+    ss = request.remote_addr
+    u = User(str(dd), ss, 'Сумма', value1, value2, str(res))
     db_session.add(u)
     db_session.commit()
 
@@ -75,10 +77,10 @@ def pos():
 
     #work with database
     init_db()
-    d_today = datetime.now()
-    dd = d_today.date()
-    ss = socket.gethostbyname(socket.gethostname())
-    u = User(str(dd), str(ss), str(4), value1, value2, str(res))
+    dd = datetime.now()
+    # dd = d_today.date()
+    ss = request.remote_addr
+    u = User(str(dd), ss, 'Возведение в степень', value1, value2, str(res))
     db_session.add(u)
     db_session.commit()
 
@@ -88,21 +90,39 @@ def pos():
 def logs():
     return str(User.query.all())
 
+@app.route('/group', methods=['GET', 'POST'])
+def group():
+    if request.method == 'GET':
+        lst = db_session.query(User.funcn, func.count()).group_by(User.funcn).all()
+    else:
+        data_date = request.get_json()
+        dd = data_date['date']
+        lst = db_session.query(User.funcn, func.count()).filter(User.date.like("%"+str(dd)+"%")).group_by(User.funcn).all()
+        if lst == []:
+            lst = 'Запросов не было'
+
+    return jsonify({'Отчет: ': lst})
+
 
 @app.route('/report', methods=['GET', 'POST'])
 def report_day():
     if request.method == 'GET':
-        sum_v = User.query.filter(User.funcn == '3').count()
-        mult_v = User.query.filter(User.funcn == '1').count()
-        div_v = User.query.filter(User.funcn == '2').count()
-        pos_v = User.query.filter(User.funcn == '4').count()
+        sum_v = User.query.filter(User.funcn == 'Сумма').count()
+        mult_v = User.query.filter(User.funcn == 'Умножение').count()
+        div_v = User.query.filter(User.funcn == 'Деление').count()
+        pos_v = User.query.filter(User.funcn == 'Возведение в степень').count()
     else:
         data_date = request.get_json()
         dd = data_date['date']
 
-        sum_v = User.query.filter(User.date == dd, User.funcn == '3').count()
-        mult_v = User.query.filter(User.date == dd, User.funcn == '1').count()
-        div_v = User.query.filter(User.date == dd, User.funcn == '2').count()
-        pos_v = User.query.filter(User.date == dd, User.funcn == '4').count()
+        sum_v = User.query.filter(User.date.like("%"+str(dd)+"%"), User.funcn == 'Сумма').count()
+        mult_v = User.query.filter(User.date.like("%"+str(dd)+"%"), User.funcn == 'Умножение').count()
+        div_v = User.query.filter(User.date.like("%"+str(dd)+"%"), User.funcn == 'Деление').count()
+        pos_v = User.query.filter(User.date.like("%"+str(dd)+"%"), User.funcn == 'Возведение в степень').count()
 
     return jsonify({'Возведение в степень': pos_v, 'Деление': div_v, 'Умножение': mult_v, 'Сложение': sum_v})
+
+
+# @app.route("/ip", methods=["GET"])
+# def ip():
+#     return request.environ

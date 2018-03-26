@@ -15,7 +15,8 @@ class User(object):
         self.result = result
 
     def __repr__(self):
-        return '<Date %r | IP %r  | Func %r  | Value1 %r | Value2 %r | Result %r>' % (self.date, self.ip, self.funcn, self.value1, self.value2, self.result)
+        # return '<Date %r | IP %r  | Func %r  | Value1 %r | Value2 %r | Result %r>' % (self.date, self.ip, self.funcn, self.value1, self.value2, self.result)
+        return '%r | %r  | %r  | %r | %r | %r \n' % (self.date, self.ip, self.funcn, self.value1, self.value2, self.result)
 
 
 users = Table('users', metadata,
